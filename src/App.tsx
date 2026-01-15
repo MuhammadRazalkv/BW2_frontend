@@ -5,6 +5,9 @@ const App = () => {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <ModeToggle />
+      <h1>
+        lkfsd 
+      </h1>
     </ThemeProvider>
   );
 };
