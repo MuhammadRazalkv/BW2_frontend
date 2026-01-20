@@ -4,7 +4,7 @@ export type Theme = "dark" | "light" | "system";
 
 type ThemeProviderState = {
   theme: Theme;
-  setTheme: () => void;
+  setTheme: (theme: Theme) => void;
 };
 
 const initialState: ThemeProviderState = {

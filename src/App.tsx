@@ -1,14 +1,20 @@
-import { ModeToggle } from "./components/mode-toggle";
-import { ThemeProvider } from "./components/theme-provider";
-
+import Layout from "./components/Layout";
+import { ThemeProvider } from "./components/ThemeProvider";
+import { Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
+import { ErrorBoundary } from "react-error-boundary";
+import ErrorFallback from "./components/ErrorFallback";
 const App = () => {
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <ModeToggle />
-      <h1>
-        lkfsd 
-      </h1>
-    </ThemeProvider>
+    <ErrorBoundary fallback={<ErrorFallback />}>
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        <Routes>
+          <Route element={<Layout />}>
+            <Route path="/" element={<Home />} />
+          </Route>
+        </Routes>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 };
 

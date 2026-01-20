@@ -121,3 +121,18 @@
     @apply bg-background text-foreground;
   }
 }
+
+canvas.react-pdf__Page__canvas {
+  margin-bottom: 50px;
+}
+
+/* Hide scrollbar but keep scrolling */
+.no-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
