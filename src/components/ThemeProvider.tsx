@@ -1,7 +1,6 @@
 import { ThemeProviderContext, type Theme } from "@/context/ThemeProvider";
 import React, { useEffect, useState } from "react";
 
-
 type ThemeProviderProps = {
   children: React.ReactNode;
   defaultTheme?: Theme;

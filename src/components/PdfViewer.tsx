@@ -4,6 +4,9 @@ import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 import PageSelector from "./PageSelector";
 import { Button } from "./ui/button";
+import { toast } from "sonner";
+import { messages } from "@/constants/messages";
+import { uploadPDF } from "@/api/pdf";
 const options = {
   cMapUrl: "/cmaps/",
 };
@@ -35,6 +38,20 @@ function PdfViewer({ pdf }: { pdf: File | null }) {
   }, []);
 
   if (!pdf) return null;
+
+  const handleUpload = async () => {
+    try {
+      const res = await uploadPDF(pdf);
+      if (res.success && res.pdfId) {
+        setPdfId(res.pdfId);
+        toast.success(messages.UPLOAD_SUCCESS);
+      }
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : messages.UNEXPECTED_ERROR,
+      );
+    }
+  };
 
   return (
     <div className="w-full" ref={containerRef}>
@@ -69,10 +86,12 @@ function PdfViewer({ pdf }: { pdf: File | null }) {
       </div>
 
       <div className="flex flex-col justify-center mt-4">
-        <Button variant={'default'}>Upload</Button>
+        <Button variant={"default"} onClick={handleUpload}>
+          Upload
+        </Button>
         {pdfId && (
           <div className="w-full max-w-200 flex justify-center">
-            <PageSelector totalPages={numPages} />
+            <PageSelector totalPages={numPages} pdfId={pdfId} />
           </div>
         )}
       </div>

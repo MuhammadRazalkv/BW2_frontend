@@ -10,15 +10,14 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 ).toString();
 const Home = () => {
   const [pdfFile, setPdfFile] = useState<File | null>(null);
-  
 
   const handleUpload = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target?.files?.[0];
-    
+
     if (file && file.type == "application/pdf") {
-      if (file.size > 1e+7 ) {
-       toast.warning('Please select pdf of maximum 10 MB')
-       return;
+      if (file.size > 1e7) {
+        toast.warning("Please select pdf of maximum 10 MB");
+        return;
       }
       setPdfFile(file);
     } else {
@@ -42,7 +41,12 @@ const Home = () => {
       {/* Upload section */}
       <div className="flex justify-center">
         <div className="w-full max-w-md bg-card border border-border rounded-lg p-6 shadow-sm space-y-4">
-          <label className="block text-sm font-medium">Select a PDF file <span className="text-muted-foreground text-xs">Maximum file size: 10 MB</span></label>
+          <label className="block text-sm font-medium">
+            Select a PDF file{" "}
+            <span className="text-muted-foreground text-xs">
+              Maximum file size: 10 MB
+            </span>
+          </label>
           <Input
             type="file"
             accept=".pdf"

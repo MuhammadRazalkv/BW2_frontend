@@ -19,10 +19,10 @@ function RotatingCards({
 }) {
   return (
     <Carousel
-      opts={{ align: "center",  }}
+      opts={{ align: "center" }}
       className="w-30 sm:w-60 md:w-90 lg:w-120 p-2"
     >
-     <CarouselContent className="">
+      <CarouselContent className="">
         {Array.from({ length: totalPages }).map((_, index) => (
           <CarouselItem
             key={index}
