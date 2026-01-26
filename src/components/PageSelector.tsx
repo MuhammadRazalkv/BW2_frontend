@@ -30,29 +30,23 @@ const PageSelector = ({
   };
   return (
     <div className="w-full flex flex-col items-center justify-center">
-      <div>
-        <p className="text-muted-foreground">
-          Select the page numbers that you need to extract.
-        </p>
-        <p className="text-muted-foreground">
-          {selectedPages.length
-            ? `Selected pages: ${selectedPages.join(", ")}`
-            : "No pages selected"}
-        </p>
+      <p className="text-muted-foreground">
+        Select the page numbers that you need to extract.
+      </p>
+      <p className="text-muted-foreground">
+        {selectedPages.length
+          ? `Selected pages: ${selectedPages.join(", ")}`
+          : "No pages selected"}
+      </p>
 
-        <RotatingCards
-          totalPages={totalPages}
-          setSelectedPages={setSelectedPages}
-          selectedPages={selectedPages}
-        />
-        <Button
-          className="w-full"
-          variant={"default"}
-          onClick={handleExtraction}
-        >
-          Extract
-        </Button>
-      </div>
+      <RotatingCards
+        totalPages={totalPages}
+        setSelectedPages={setSelectedPages}
+        selectedPages={selectedPages}
+      />
+      <Button className="w-full" variant={"default"} onClick={handleExtraction}>
+        Extract
+      </Button>
     </div>
   );
 };

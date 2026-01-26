@@ -19,9 +19,28 @@ export async function uploadPDF(pdf: File) {
 }
 export async function extractPDF(pdfId: string, pages: number[]) {
   try {
-    const response = await axiosInstance.get(
-      `/extract?pdfId=${pdfId}&pages=${pages}`,
+    const response = await axios.get(
+      `${import.meta.env.VITE_API_URL}/pdf/extract?pdfId=${pdfId}&pages=${pages.toString()}`,
+      {
+        responseType: "blob",
+        withCredentials: true,
+      },
     );
+    const blob = new Blob([response.data], {
+      type: "application/pdf",
+    });
+
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+
+    a.href = url;
+    a.download = "extracted.pdf";
+    document.body.appendChild(a);
+    a.click();
+
+    a.remove();
+    window.URL.revokeObjectURL(url);
+
     return response.data;
   } catch (err: any) {
     if (axios.isAxiosError(err) && err.response) {
