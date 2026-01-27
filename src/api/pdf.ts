@@ -17,10 +17,11 @@ export async function uploadPDF(pdf: File) {
     }
   }
 }
+
 export async function extractPDF(pdfId: string, pages: number[]) {
   try {
-    const response = await axios.get(
-      `${import.meta.env.VITE_API_URL}/pdf/extract?pdfId=${pdfId}&pages=${pages.toString()}`,
+    const response = await axiosInstance.get(
+      `/extract?pdfId=${pdfId}&pages=${pages.toString()}`,
       {
         responseType: "blob",
         withCredentials: true,
@@ -41,6 +42,34 @@ export async function extractPDF(pdfId: string, pages: number[]) {
     a.remove();
     window.URL.revokeObjectURL(url);
 
+    return response.data;
+  } catch (err: any) {
+    if (axios.isAxiosError(err) && err.response) {
+      throw new Error(err.response.data.message);
+    } else {
+      throw new Error(messages.NETWORK_ISSUE);
+    }
+  }
+}
+
+export async function listPDF() {
+  try {
+    const response = await axiosInstance.get("/list");
+    return response.data;
+  } catch (err: any) {
+    if (axios.isAxiosError(err) && err.response) {
+      throw new Error(err.response.data.message);
+    } else {
+      throw new Error(messages.NETWORK_ISSUE);
+    }
+  }
+}
+export async function getPDF(pdfId: string) {
+  try {
+    const response = await axiosInstance.get(`/pdf?pdfId=${pdfId}`, {
+      responseType: "blob",
+      withCredentials: true,
+    });
     return response.data;
   } catch (err: any) {
     if (axios.isAxiosError(err) && err.response) {

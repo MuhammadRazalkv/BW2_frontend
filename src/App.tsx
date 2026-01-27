@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "./components/ErrorFallback";
+import History from "./pages/History";
 const App = () => {
   return (
     <ErrorBoundary fallback={<ErrorFallback />}>
@@ -11,6 +12,7 @@ const App = () => {
         <Routes>
           <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
+            <Route path="/history" element={<History />} />
           </Route>
         </Routes>
       </ThemeProvider>

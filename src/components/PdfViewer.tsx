@@ -11,9 +11,15 @@ const options = {
   cMapUrl: "/cmaps/",
 };
 
-function PdfViewer({ pdf }: { pdf: File | null }) {
+function PdfViewer({
+  pdf,
+  hostedPdfId,
+}: {
+  pdf: File | null;
+  hostedPdfId?: string;
+}) {
   const [numPages, setNumPages] = useState<number>();
-  const [pdfId, setPdfId] = useState(null);
+  const [pdfId, setPdfId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
     setNumPages(numPages);
@@ -37,6 +43,16 @@ function PdfViewer({ pdf }: { pdf: File | null }) {
       resizeObserver.disconnect();
     };
   }, []);
+  useEffect(() => {
+    setPdfId(null);
+    setLoading(false);
+  }, [pdf]);
+
+  useEffect(() => {
+    if (hostedPdfId && !pdfId) {
+      setPdfId(hostedPdfId);
+    }
+  }, [hostedPdfId, pdfId]);
 
   if (!pdf) return null;
 
