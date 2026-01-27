@@ -14,6 +14,7 @@ const options = {
 function PdfViewer({ pdf }: { pdf: File | null }) {
   const [numPages, setNumPages] = useState<number>();
   const [pdfId, setPdfId] = useState(null);
+  const [loading, setLoading] = useState(false);
   function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
     setNumPages(numPages);
   }
@@ -41,6 +42,7 @@ function PdfViewer({ pdf }: { pdf: File | null }) {
 
   const handleUpload = async () => {
     try {
+      setLoading(true);
       const res = await uploadPDF(pdf);
       if (res.success && res.pdfId) {
         setPdfId(res.pdfId);
@@ -50,6 +52,8 @@ function PdfViewer({ pdf }: { pdf: File | null }) {
       toast.error(
         error instanceof Error ? error.message : messages.UNEXPECTED_ERROR,
       );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -86,9 +90,12 @@ function PdfViewer({ pdf }: { pdf: File | null }) {
       </div>
 
       <div className="flex flex-col justify-center mt-4">
-        <Button variant={"default"} onClick={handleUpload}>
-          Upload
-        </Button>
+        {!pdfId && (
+          <Button disabled={loading} variant={"default"} onClick={handleUpload}>
+            Upload
+          </Button>
+        )}
+
         {pdfId && (
           <div className="w-full max-w-200 flex justify-center">
             <PageSelector totalPages={numPages} pdfId={pdfId} />
