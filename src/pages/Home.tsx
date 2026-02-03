@@ -1,6 +1,9 @@
+import { uploadPDF } from "@/api/pdf";
+import LoadingState from "@/components/LoadingState";
 import PdfViewer from "@/components/PdfViewer";
 import { Input } from "@/components/ui/input";
-import { useState, type ChangeEvent } from "react";
+import { messages } from "@/constants/messages";
+import { useCallback, useEffect, useState, type ChangeEvent } from "react";
 import { pdfjs } from "react-pdf";
 import { toast } from "sonner";
 
@@ -8,22 +11,31 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.mjs",
   import.meta.url,
 ).toString();
+const MAX_PDF_SIZE = 10 * 1024 * 1024;
 const Home = () => {
   const [pdfFile, setPdfFile] = useState<File | null>(null);
 
   const handleUpload = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target?.files?.[0];
+    const file = e.target.files?.[0];
+    if (!file) return;
 
-    if (file && file.type == "application/pdf") {
-      if (file.size > 1e7) {
-        toast.warning("Please select pdf of maximum 10 MB");
-        return;
-      }
-      setPdfFile(file);
-    } else {
-      setPdfFile(null);
+    const isPDF =
+      file.type === "application/pdf" ||
+      file.name.toLowerCase().endsWith(".pdf");
+
+    if (!isPDF) {
+      e.target.value = "";
       toast.warning("Please select a valid PDF file.");
+      return;
     }
+
+    if (file.size > MAX_PDF_SIZE) {
+      e.target.value = "";
+      toast.warning("Please select pdf of maximum 10 MB");
+      return;
+    }
+
+    setPdfFile(file);
   };
 
   return (
@@ -42,7 +54,7 @@ const Home = () => {
       <div className="flex justify-center">
         <div className="w-full max-w-md bg-card border border-border rounded-lg p-6 shadow-sm space-y-4">
           <label className="block text-sm font-medium">
-            Select a PDF file{" "}
+            Upload a PDF file{" "}
             <span className="text-muted-foreground text-xs">
               Maximum file size: 10 MB
             </span>
