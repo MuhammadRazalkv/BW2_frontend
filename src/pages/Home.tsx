@@ -1,9 +1,6 @@
-import { uploadPDF } from "@/api/pdf";
-import LoadingState from "@/components/LoadingState";
 import PdfViewer from "@/components/PdfViewer";
 import { Input } from "@/components/ui/input";
-import { messages } from "@/constants/messages";
-import { useCallback, useEffect, useState, type ChangeEvent } from "react";
+import { useState, type ChangeEvent } from "react";
 import { pdfjs } from "react-pdf";
 import { toast } from "sonner";
 
